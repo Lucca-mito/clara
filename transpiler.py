@@ -1,8 +1,11 @@
 # coding: utf-8
 import re
+import io
 
-f = open('lucca', 'r')
+f = io.open('clara', mode='r', encoding='utf-8')
+#f = open('clara', 'r')
 original = f.read()
+
 transpiled = original
 
 reps = [
@@ -58,7 +61,7 @@ for rep in reps:
     pattern = r"(?!\B'[^']*)" + pattern + r"(?![^']*'\B)"
 
     # Replaces every [pattern] with [translated] in [transpiled]
-    transpiled = re.sub(pattern, translated, transpiled, flags=re.M|re.UNICODE)
+    transpiled = re.sub(pattern, translated, transpiled, flags=re.UNICODE)
 
-open('transpilado', 'w').write(transpiled)
+open('transpilado', 'w').write(transpiled.encode('utf8'))
 f.close()
