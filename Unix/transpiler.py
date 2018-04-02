@@ -2,11 +2,11 @@
 import re
 import io
 
-f = io.open('clara', mode='r', encoding='utf-8')
-#f = open('clara', 'r')
+f = io.open('teste.clara', mode='r', encoding='utf-8')
 original = f.read()
 
-transpiled = original
+# Since it's in Portuguese, we have to support non-ASCII characters
+transpiled = "#coding: utf-8\n" + original
 
 reps = [
     # Punctuation
@@ -29,7 +29,7 @@ reps = [
     (ur'~'             , 'not '  ),
     (ur'\bnão\b'       , 'not'   ),
     (ur'\bnao\b'       , 'not'   ),
-    (ur'\bou\b'        , 'ou'    ),
+    (ur'\bou\b'        , 'or'    ),
     (ur'\be\b'         , 'and'   ),
 
     # Control flow
@@ -63,5 +63,5 @@ for rep in reps:
     # Replaces every [pattern] with [translated] in [transpiled]
     transpiled = re.sub(pattern, translated, transpiled, flags=re.UNICODE)
 
-open('transpilado', 'w').write(transpiled.encode('utf8'))
+open('teste.py', 'w').write(transpiled.encode('utf8'))
 f.close()
