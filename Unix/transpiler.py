@@ -1,12 +1,14 @@
 # coding: utf-8
-import re
+import sys
 import io
+import re
 
-f = io.open('teste.clara', mode='r', encoding='utf-8')
+filename = sys.argv[1]
+f = io.open(filename, mode='r', encoding='utf-8')
 original = f.read()
 
 # Since it's in Portuguese, we have to support non-ASCII characters
-transpiled = "#coding: utf-8\n" + original
+transpiled = '#coding: utf-8\n' + original
 
 reps = [
     # Punctuation
@@ -63,5 +65,6 @@ for rep in reps:
     # Replaces every [pattern] with [translated] in [transpiled]
     transpiled = re.sub(pattern, translated, transpiled, flags=re.UNICODE)
 
-open('teste.py', 'w').write(transpiled.encode('utf8'))
+filename_out = filename.replace('.clara', '.py')
+open(filename_out, 'w').write(transpiled.encode('utf8'))
 f.close()
