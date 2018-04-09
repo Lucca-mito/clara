@@ -12,7 +12,7 @@ transpiled = '#coding: utf-8\n' + original
 reps = [
     # Punctuation
     (ur'\b\.\b'        , ';'     ),
-    (ur'\b!\b'         , '();'   ),
+    (ur'!'             , '();'   ),
 
     # Comparison
     (ur'='             , '=='    ),
