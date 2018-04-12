@@ -2,69 +2,70 @@
 import sys
 import io
 import re
+# filename = sys.argv[1]
+# f = io.open(filename, mode='r', encoding='utf-8')
+# original = f.read()
+def transpile(source):
+    # Since it's in Portuguese, we have to support non-ASCII characters
+    transpiled = '#coding: utf-8\n' + source
 
-filename = sys.argv[1]
-f = io.open(filename, mode='r', encoding='utf-8')
-original = f.read()
+    reps = [
+        # Punctuation
+        (ur'\b\.\b'        , ';'     ),
+        (ur'!'             , '();'   ),
 
-# Since it's in Portuguese, we have to support non-ASCII characters
-transpiled = '#coding: utf-8\n' + original
+        # Comparison
+        (ur'='             , '=='    ),
+        (ur'\bfor\b'       , '=='    ),
 
-reps = [
-    # Punctuation
-    (ur'\b\.\b'        , ';'     ),
-    (ur'!'             , '();'   ),
+        # Assignment
+        (ur'\bé\b'         , '='     ),
+        (ur'\beh\b'        , '='     ),
+        (ur'\bsão\b'       , '='     ),
+        (ur'\bsao\b'       , '='     ),
 
-    # Comparison
-    (ur'='             , '=='    ),
-    (ur'\bfor\b'       , '=='    ),
+        # Booleans
+        (ur'\bverdadeiro\b', 'True'  ),
+        (ur'\bfalso\b'     , 'False' ),
+        (ur'~'             , 'not '  ),
+        (ur'\bnão\b'       , 'not'   ),
+        (ur'\bnao\b'       , 'not'   ),
+        (ur'\bou\b'        , 'or'    ),
+        (ur'\be\b'         , 'and'   ),
 
-    # Assignment
-    (ur'\bé\b'         , '='     ),
-    (ur'\beh\b'        , '='     ),
-    (ur'\bsão\b'       , '='     ),
-    (ur'\bsao\b'       , '='     ),
+        # Control flow
+        (ur'\bse\b'        , 'if'    ),
+        (ur'\bsenão\b'     , 'else'  ),
+        (ur'\bsenao\b'     , 'else'  ),
+        (ur'\benquanto\b'  , 'while' ),
+        (ur'\bcada\b'      , 'for'   ),
+        (ur'\bem\b'        , 'in'    ),
 
-    # Booleans
-    (ur'\bverdadeiro\b', 'True'  ),
-    (ur'\bfalso\b'     , 'False' ),
-    (ur'~'             , 'not '  ),
-    (ur'\bnão\b'       , 'not'   ),
-    (ur'\bnao\b'       , 'not'   ),
-    (ur'\bou\b'        , 'or'    ),
-    (ur'\be\b'         , 'and'   ),
+        # Functions
+        (ur'\bfunção\b'    , 'def'   ),
+        (ur'\bfunçao\b'    , 'def'   ),
+        (ur'\bfuncão\b'    , 'def'   ),
+        (ur'\bfuncao\b'    , 'def'   ),
+        (ur'\bretorna\b'   , 'return'),
 
-    # Control flow
-    (ur'\bse\b'        , 'if'    ),
-    (ur'\bsenão\b'     , 'else'  ),
-    (ur'\bsenao\b'     , 'else'  ),
-    (ur'\benquanto\b'  , 'while' ),
-    (ur'\bcada\b'      , 'for'   ),
-    (ur'\bem\b'        , 'in'    ),
+        # I/O
+        (ur'\bmostra\b'    , 'print' ),
+        (ur'\bentrada\b'   , 'input' ),
+    ];
+    for rep in reps:
+        pattern, translated = rep;
 
-    # Functions
-    (ur'\bfunção\b'    , 'def'   ),
-    (ur'\bfunçao\b'    , 'def'   ),
-    (ur'\bfuncão\b'    , 'def'   ),
-    (ur'\bfuncao\b'    , 'def'   ),
-    (ur'\bretorna\b'   , 'return'),
+        # Excludes stuff between double quotes. Don't worry about it.
+        pattern = r'(?!\B"[^"]*)' + pattern + r'(?![^"]*"\B)'
 
-    # I/O
-    (ur'\bmostra\b'    , 'print' ),
-    (ur'\bentrada\b'   , 'input' ),
-];
-for rep in reps:
-    pattern, translated = rep;
+        # Excludes stuff between single quotes. Don't worry about it either.
+        pattern = r"(?!\B'[^']*)" + pattern + r"(?![^']*'\B)"
 
-    # Excludes stuff between double quotes. Don't worry about it.
-    pattern = r'(?!\B"[^"]*)' + pattern + r'(?![^"]*"\B)'
+        # Replaces every [pattern] with [translated] in [transpiled]
+        transpiled = re.sub(pattern, translated, transpiled, flags=re.UNICODE)
 
-    # Excludes stuff between single quotes. Don't worry about it either.
-    pattern = r"(?!\B'[^']*)" + pattern + r"(?![^']*'\B)"
+    return transpiled
 
-    # Replaces every [pattern] with [translated] in [transpiled]
-    transpiled = re.sub(pattern, translated, transpiled, flags=re.UNICODE)
-
-filename_out = filename.replace('.clara', '.py')
-open(filename_out, 'w').write(transpiled.encode('utf8'))
-f.close()
+# filename_out = filename.replace('.clara', '.py')
+# open(filename_out, 'w').write(transpiled.encode('utf8'))
+# f.close()
