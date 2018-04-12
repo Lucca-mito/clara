@@ -11,7 +11,7 @@ def transpile(source):
 
     reps = [
         # Punctuation
-        (ur'\b\.\b'        , ';'     ),
+        (ur'\.'            , ';'     ),
         (ur'!'             , '();'   ),
 
         # Comparison
