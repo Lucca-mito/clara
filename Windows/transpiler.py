@@ -1,15 +1,7 @@
-# coding: utf-8
-import sys
+#coding: utf-8
 import re
 
-# filename = sys.argv[1]
-# f = open(filename, 'r')
-# original = f.read()
-def transpile(source):
-    # Since it's in Portuguese, we have to support non-ASCII characters
-    transpiled = '#coding: utf-8\n' + source
-
-    reps = [
+reps = [
         # Punctuation
         (ur'\.'            , ';'     ),
         (ur'!'             , '();'   ),
@@ -35,7 +27,7 @@ def transpile(source):
 
         # Control flow
         (ur'\bse\b'        , 'if'    ),
-        (ur'\bsenão\b'     , 'else'  ),
+        #(ur'\bsenão\b'     , 'else'  ),
         (ur'\bsenao\b'     , 'else'  ),
         (ur'\benquanto\b'  , 'while' ),
         (ur'\bcada\b'      , 'for'   ),
@@ -52,20 +44,31 @@ def transpile(source):
         (ur'\bmostra\b'    , 'print' ),
         (ur'\bentrada\b'   , 'input' ),
     ];
+
+
+def replace_multiple(source): # a convenience replacement function
+    if not source: return "" # no need to process empty strings
     for rep in reps:
-        pattern, translated = rep;
+        source = re.sub(rep[0], rep[1], source, flags=re.UNICODE)
+    return source
 
-        # Excludes stuff between double quotes. Don't worry about it.
-        pattern = r'(?!\B"[^"]*)' + pattern + r'(?![^"]*"\B)'
+def transpile(source):
+    # A pattern to match strings between quotes
+    QUOTED_STRING = re.compile("(\\\\?[\"']).*?\\1")
 
-        # Excludes stuff between single quotes. Don't worry about it either.
-        pattern = r"(?!\B'[^']*)" + pattern + r"(?![^']*'\B)"
+    result = []  # a store for the result pieces
+    head = 0  # a search head reference
+    for match in QUOTED_STRING.finditer(source):
+        # process everything until the current quoted match and add it to the result
+        result.append(replace_multiple(source[head:match.start()]))
+        result.append(match.group(0))  # add the quoted match verbatim to the result
+        head = match.end()  # move the search head to the end of the quoted match
+    if head < len(source):  # if the search head is not at the end of the string
+        # process the rest of the string and add it to the result
+        result.append(replace_multiple(source[head:]))
 
-        # Replaces every [pattern] with [translated] in [transpiled]
-        transpiled = re.sub(pattern, translated, transpiled, flags=re.UNICODE)
+    # Join back the result pieces
+    transpiled = "".join(result)
 
-    return transpiled
-
-# filename_out = filename.replace('.clara', '.py')
-# open(filename_out, 'w').write(transpiled)
-# f.close()
+    # Since it's in Portuguese, we have to support non-ASCII characters
+    return "#coding: utf-8\n" + transpiled
