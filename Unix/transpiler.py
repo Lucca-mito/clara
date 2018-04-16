@@ -27,7 +27,7 @@ reps = [
 
         # Control flow
         (ur'\bse\b'        , 'if'    ),
-        #(ur'\bsenão\b'     , 'else'  ),
+        (ur'\bsenão\b'     , 'else'  ),
         (ur'\bsenao\b'     , 'else'  ),
         (ur'\benquanto\b'  , 'while' ),
         (ur'\bcada\b'      , 'for'   ),
@@ -56,6 +56,9 @@ def transpile(source):
     # A pattern to match strings between quotes
     QUOTED_STRING = re.compile("(\\\\?[\"']).*?\\1")
 
+    # So match accented characters, the source must be converted to a Unicode object
+    source = unicode(source, "utf-8")
+
     result = []  # a store for the result pieces
     head = 0  # a search head reference
     for match in QUOTED_STRING.finditer(source):
@@ -72,3 +75,10 @@ def transpile(source):
 
     # Since it's in Portuguese, we have to support non-ASCII characters
     return "#coding: utf-8\n" + transpiled
+
+# fin = open('teste.clara', 'r').read()
+# source = fin.read()
+# fout = open('teste.py', 'w')
+# fout.write(transpile(source).encode('utf-8'))
+# fin.close()
+# fout.close()

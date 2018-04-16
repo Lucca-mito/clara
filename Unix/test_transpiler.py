@@ -26,6 +26,14 @@ class TranspilerTDD(unittest.TestCase):
         )
         self.assertEqual(transpile(source), expected)
 
+    def test_assignment_with_accent(self):
+        source = 'minha_idade é 17'
+        expected = (
+            '#coding: utf-8\n'
+            'minha_idade = 17'
+        )
+        self.assertEqual(transpile(source), expected)
+
     def test_excludes_strings(self):
         source = '"mostra quem vc eh!"'
         expected = (
@@ -35,11 +43,12 @@ class TranspilerTDD(unittest.TestCase):
         self.assertEqual(transpile(source), expected)
 
     def test_supports_escaped_quotes(self):
-        source = 'mostra "\"Não perca a cabeça\" - Robespierre"'
+        source = 'mostra "\\"Não perca a cabeça\\" - Robespierre"'
         expected = (
-            '#coding: utf-8\n'
-            'print "\"Não perca a cabeça\" - Robespierre"'
+            u'#coding: utf-8\n'
+            u'print "\\"Não perca a cabeça\\" - Robespierre"'
         )
+        self.assertEqual(transpile(source), expected)
 
 if __name__ == '__main__':
     unittest.main()

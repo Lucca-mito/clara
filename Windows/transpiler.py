@@ -27,7 +27,7 @@ reps = [
 
         # Control flow
         (ur'\bse\b'        , 'if'    ),
-        #(ur'\bsenão\b'     , 'else'  ),
+        (ur'\bsenão\b'     , 'else'  ),
         (ur'\bsenao\b'     , 'else'  ),
         (ur'\benquanto\b'  , 'while' ),
         (ur'\bcada\b'      , 'for'   ),
@@ -72,3 +72,9 @@ def transpile(source):
 
     # Since it's in Portuguese, we have to support non-ASCII characters
     return "#coding: utf-8\n" + transpiled
+
+# fin = open('teste.clara', 'r')
+# source = fin.read()
+# fout = open('teste.py', 'w')
+# fout.write(transpile(source))
+# fout.close()
