@@ -73,8 +73,10 @@ def transpile(source):
     # Since it's in Portuguese, we have to support non-ASCII characters
     return "#coding: utf-8\n" + transpiled
 
-# fin = open('teste.clara', 'r')
-# source = fin.read()
-# fout = open('teste.py', 'w')
-# fout.write(transpile(source))
-# fout.close()
+def make(filename):
+    fin = open(filename, 'r')
+    source = fin.read()
+    fout = open(filename.replace('.clara', '.py'), 'w')
+    fout.write(transpile(source))
+    fin.close()
+    fout.close()

@@ -32,7 +32,6 @@ class TranspilerTDD(unittest.TestCase):
 #            '#coding: utf-8\n'
 #            'minha_idade = 17'
 #        )
-#        print source
 #        self.assertEqual(transpile(source), expected)
 
     def test_excludes_strings(self):

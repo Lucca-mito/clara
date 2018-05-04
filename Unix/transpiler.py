@@ -56,7 +56,7 @@ def transpile(source):
     # A pattern to match strings between quotes
     QUOTED_STRING = re.compile("(\\\\?[\"']).*?\\1")
 
-    # So match accented characters, the source must be converted to a Unicode object
+    # Unix: To match accented characters, the source must be converted to a Unicode object
     source = unicode(source, "utf-8")
 
     result = []  # a store for the result pieces
@@ -76,9 +76,12 @@ def transpile(source):
     # Since it's in Portuguese, we have to support non-ASCII characters
     return "#coding: utf-8\n" + transpiled
 
-# fin = open('teste.clara', 'r').read()
-# source = fin.read()
-# fout = open('teste.py', 'w')
-# fout.write(transpile(source).encode('utf-8'))
-# fin.close()
-# fout.close()
+def make(filename):
+    fin = open(filename, 'r')
+    source = fin.read()
+    fout = open(filename.replace('.clara', '.py'), 'w')
+    fout.write(transpile(source).encode('utf-8'))
+    fin.close()
+    fout.close()
+
+make('teste.clara')
