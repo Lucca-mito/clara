@@ -3,47 +3,41 @@ import re
 
 reps = [
         # Punctuation
-        (ur'\.'            , ';'     ),
-        (ur'!'             , '();'   ),
+        (ur'\.'                , ';'      ),
+        (ur'!'                 , '();'    ),
 
         # Comparison
-        (ur'=/='           , '!='    ),
-        (ur'(?<![!])='     , '=='    ),
-        (ur'\bfor\b'       , '=='    ),
+        (ur'=/='               , '!='     ),
+        (ur'(?<![!])='         , '=='     ),
+        (ur'\bfor\b'           , '=='     ),
 
         # Assignment
-        (ur'\bé\b'         , '='     ),
-        (ur'\beh\b'        , '='     ),
-        (ur'\bsão\b'       , '='     ),
-        (ur'\bsao\b'       , '='     ),
+        (ur'\bé\b'             , '='      ),
+        (ur'\beh\b'            , '='      ),
+        (ur'\bs(a|ã)o\b'       , '='      ),
 
         # Booleans
-        (ur'\bverdadeiro\b', 'True'  ),
-        (ur'\bfalso\b'     , 'False' ),
-        (ur'~'             , 'not '  ),
-        (ur'\bnão\b'       , 'not'   ),
-        (ur'\bnao\b'       , 'not'   ),
-        (ur'\bou\b'        , 'or'    ),
-        (ur'\be\b'         , 'and'   ),
+        (ur'\bverdadeiro\b'    , 'True'   ),
+        (ur'\bfalso\b'         , 'False'  ),
+        (ur'~'                 , 'not '   ),
+        (ur'\bn(a|ã)o\b'       , 'not'    ),
+        (ur'\bou\b'            , 'or'     ),
+        (ur'\be\b'             , 'and'    ),
 
         # Control flow
-        (ur'\bse\b'        , 'if'    ),
-        (ur'\bsenão\b'     , 'else'  ),
-        (ur'\bsenao\b'     , 'else'  ),
-        (ur'\benquanto\b'  , 'while' ),
-        (ur'\bcada\b'      , 'for'   ),
-        (ur'\bem\b'        , 'in'    ),
+        (ur'\bse\b'            , 'if'    ),
+        (ur'\bsen(a|ã)o\b'     , 'else'  ),
+        (ur'\benquanto\b'      , 'while' ),
+        (ur'\bcada\b'          , 'for'   ),
+        (ur'\bem\b'            , 'in'    ),
 
         # Functions
-        (ur'\bfunção\b'    , 'def'   ),
-        (ur'\bfunçao\b'    , 'def'   ),
-        (ur'\bfuncão\b'    , 'def'   ),
-        (ur'\bfuncao\b'    , 'def'   ),
-        (ur'\bretorna\b'   , 'return'),
+        (ur'\bfun(c|ç)(a|ã)o\b', 'def'   ),
+        (ur'\bretorna\b'       , 'return'),
 
         # I/O
-        (ur'\bmostra\b'    , 'print' ),
-        (ur'\bentrada\b'   , 'input' ),
+        (ur'\bmostra\b'        , 'print' ),
+        (ur'\bentrada\b'       , 'input' ),
     ];
 
 
@@ -81,3 +75,5 @@ def make(filename):
     fout.write(transpile(source))
     fin.close()
     fout.close()
+
+#make('teste.clara')
