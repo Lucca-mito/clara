@@ -7,7 +7,8 @@ reps = [
         (ur'!'             , '();'   ),
 
         # Comparison
-        (ur'='             , '=='    ),
+        (ur'=/='           , '!='    ),
+        (ur'(?<![!])='     , '=='    ),
         (ur'\bfor\b'       , '=='    ),
 
         # Assignment

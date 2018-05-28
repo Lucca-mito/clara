@@ -7,7 +7,8 @@ reps = [
         (ur'!'             , '();'   ),
 
         # Comparison
-        (ur'='             , '=='    ),
+        (ur'=/='           , '!='    ),
+        (ur'(?<![!])='     , '=='    ),
         (ur'\bfor\b'       , '=='    ),
 
         # Assignment
@@ -84,4 +85,4 @@ def make(filename):
     fin.close()
     fout.close()
 
-make('teste.clara')
+#make('teste.clara')

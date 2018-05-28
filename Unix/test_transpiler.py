@@ -16,7 +16,7 @@ class TranspilerTDD(unittest.TestCase):
             '#coding: utf-8\n'
             'something;'
         )
-        self.assertEqual(transpile(source), expected)
+        self.assertEqual(expected, transpile(source))
 
     def test_assignment_without_accent(self):
         source = 'minha_idade eh 17'
@@ -24,7 +24,7 @@ class TranspilerTDD(unittest.TestCase):
             '#coding: utf-8\n'
             'minha_idade = 17'
         )
-        self.assertEqual(transpile(source), expected)
+        self.assertEqual(expected, transpile(source))
 
     def test_assignment_with_accent(self):
         source = 'minha_idade é 17'
@@ -32,7 +32,7 @@ class TranspilerTDD(unittest.TestCase):
             '#coding: utf-8\n'
             'minha_idade = 17'
         )
-        self.assertEqual(transpile(source), expected)
+        self.assertEqual(expected, transpile(source))
 
     def test_excludes_strings(self):
         source = '"mostra quem vc eh!"'
@@ -40,7 +40,7 @@ class TranspilerTDD(unittest.TestCase):
             '#coding: utf-8\n'
             '"mostra quem vc eh!"'
         )
-        self.assertEqual(transpile(source), expected)
+        self.assertEqual(expected, transpile(source))
 
     def test_supports_escaped_quotes(self):
         source = 'mostra "\\"Não perca a cabeça\\" - Robespierre"'
@@ -48,7 +48,23 @@ class TranspilerTDD(unittest.TestCase):
             u'#coding: utf-8\n'
             u'print "\\"Não perca a cabeça\\" - Robespierre"'
         )
-        self.assertEqual(transpile(source), expected)
+        self.assertEqual(expected, transpile(source))
+
+    def test_equality_operator(self):
+        source = 'a = b'
+        expected = (
+            '#coding: utf-8\n'
+            'a == b'
+        )
+        self.assertEqual(expected, transpile(source))
+
+    def test_inequality_operator(self):
+        source = 'a =/= b'
+        expected = (
+            '#coding: utf-8\n'
+            'a != b'
+        )
+        self.assertEqual(expected, transpile(source))
 
 if __name__ == '__main__':
     unittest.main()
