@@ -8,6 +8,7 @@ reps = [
 
         # Comparison
         (ur'=/='               , '!='     ),
+        (ur'\bn(a|ã)o for\b'   , '!='     ),
         (ur'(?<![!])='         , '=='     ),
         (ur'\bfor\b'           , '=='     ),
 
