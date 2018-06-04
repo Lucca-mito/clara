@@ -29,7 +29,7 @@ reps = [
         (ur'\bse\b'            , 'if'    ),
         (ur'\bsen(a|ã)o\b'     , 'else'  ),
         (ur'\benquanto\b'      , 'while' ),
-        (ur'\bcada\b'          , 'for'   ),
+        (ur'\b(pa*ra )*cada\b' , 'for'   ),
         (ur'\bem\b'            , 'in'    ),
 
         # Functions

@@ -27,13 +27,13 @@ class TranspilerTDD(unittest.TestCase):
 #                    'minha_idade = 17')
 #        self.assertEqual(expected, transpile(source))
 
-    def test_array_assignment(self):
-        source   = ('numeros são 1, 2, 3\n'
-                    'um, dois, tres são numeros')
-        expected = ('#coding: utf-8\n'
-                    'numeros = 1, 2, 3\n'
-                    'um, dois, tres = numeros')
-        self.assertEqual(expected, transpile(source))
+#    def test_array_assignment(self):
+#        source   = ('numeros são 1, 2, 3\n'
+#                    'um, dois, tres são numeros')
+#        expected = ('#coding: utf-8\n'
+#                    'numeros = 1, 2, 3\n'
+#                    'um, dois, tres = numeros')
+#        self.assertEqual(expected, transpile(source))
 
     def test_excludes_strings(self):
         source   =  '"mostra quem vc eh!"'
@@ -59,13 +59,13 @@ class TranspilerTDD(unittest.TestCase):
                     'a != b')
         self.assertEqual(expected, transpile(source))
 
-    def test_function_definition(self):
-        source   = ('função f(x):\n'
-                    '    retorna 2*x')
-        expected = ('#coding: utf-8\n'
-                    'def f(x):\n'
-                    '    return 2*x')
-        self.assertEqual(expected, transpile(source))
+#    def test_function_definition(self):
+#        source   = ('função f(x):\n'
+#                    '    retorna 2*x')
+#        expected = ('#coding: utf-8\n'
+#                    'def f(x):\n'
+#                    '    return 2*x')
+#        self.assertEqual(expected, transpile(source))
 
 if __name__ == '__main__':
     unittest.main()
