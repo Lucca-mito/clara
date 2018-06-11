@@ -2,44 +2,44 @@
 import re
 
 reps = [
-        # Punctuation
-        (ur'\.'                , ';'      ),
-        (ur'!'                 , '();'    ),
+    # Punctuation
+    (ur'\.'                , ';'      ),
+    (ur'!'                 , '();'    ),
 
-        # Comparison
-        (ur'=/='               , '!='     ),
-        (ur'\bn(a|ã)o for\b'   , '!='     ),
-        (ur'(?<![!])='         , '=='     ),
-        (ur'\bfor\b'           , '=='     ),
+    # Comparison
+    (ur'=/='               , '!='     ),
+    (ur'\bn(a|ã)o for\b'   , '!='     ),
+    (ur'(?<![!])='         , '=='     ),
+    (ur'\bfor\b'           , '=='     ),
 
-        # Assignment
-        (ur'\bé\b'             , '='      ),
-        (ur'\beh\b'            , '='      ),
-        (ur'\bs(a|ã)o\b'       , '='      ),
+    # Assignment
+    (ur'\bé\b'             , '='      ),
+    (ur'\beh\b'            , '='      ),
+    (ur'\bs(a|ã)o\b'       , '='      ),
 
-        # Booleans
-        (ur'\bverdadeiro\b'    , 'True'   ),
-        (ur'\bfalso\b'         , 'False'  ),
-        (ur'~'                 , 'not '   ),
-        (ur'\bn(a|ã)o\b'       , 'not'    ),
-        (ur'\bou\b'            , 'or'     ),
-        (ur'\be\b'             , 'and'    ),
+    # Booleans
+    (ur'\bverdadeiro\b'    , 'True'   ),
+    (ur'\bfalso\b'         , 'False'  ),
+    (ur'~'                 , 'not '   ),
+    (ur'\bn(a|ã)o\b'       , 'not'    ),
+    (ur'\bou\b'            , 'or'     ),
+    (ur'\be\b'             , 'and'    ),
 
-        # Control flow
-        (ur'\bse\b'            , 'if'    ),
-        (ur'\bsen(a|ã)o\b'     , 'else'  ),
-        (ur'\benquanto\b'      , 'while' ),
-        (ur'\b(pa*ra )*cada\b' , 'for'   ),
-        (ur'\bem\b'            , 'in'    ),
+    # Control flow
+    (ur'\bse\b'            , 'if'    ),
+    (ur'\bsen(a|ã)o\b'     , 'else'  ),
+    (ur'\benquanto\b'      , 'while' ),
+    (ur'\b(pa*ra )*cada\b' , 'for'   ),
+    (ur'\bem\b'            , 'in'    ),
 
-        # Functions
-        (ur'\bfun(c|ç)(a|ã)o\b', 'def'   ),
-        (ur'\bretorna\b'       , 'return'),
+    # Functions
+    (ur'\bfun(c|ç)(a|ã)o\b', 'def'   ),
+    (ur'\bretorna\b'       , 'return'),
 
-        # I/O
-        (ur'\bmostra\b'        , 'print' ),
-        (ur'\bentrada\b'       , 'input' ),
-    ];
+    # I/O
+    (ur'\bmostra\b'        , 'print' ),
+    (ur'\bentrada\b'       , 'input' ),
+];
 
 
 def replace_multiple(source): # a convenience replacement function
