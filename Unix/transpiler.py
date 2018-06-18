@@ -46,8 +46,10 @@ reps = [
 
     # Objetos
     (ur'(\w+) d(e|o|a) (\w+)', '\\3.\\1'),
+    (ur'uma* (\w+) = uma* (\w+)', 'class \\1(\\2)'),
+    (ur'= uma*'              , '='      ),
+    (ur'(o|O)bjeto'          , 'object' ),
 ];
-
 
 def replace_multiple(source): # a convenience replacement function
     if not source: return "" # no need to process empty strings

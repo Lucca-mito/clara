@@ -46,6 +46,9 @@ reps = [
 
     # Objetos
     (ur'(\w+) d(e|o|a) (\w+)', '\\3.\\1'),
+    (ur'uma* (\w+) = uma* (\w+)', 'class \\1(\\2)'),
+    (ur'= uma*'              , '='      ),
+    (ur'(o|O)bjeto'          , 'object' ),
 ];
 
 

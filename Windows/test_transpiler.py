@@ -73,10 +73,19 @@ class TranspilerTDD(unittest.TestCase):
                     'if ta_chovendo: corre();')
 
     def test_property_access(self):
-        source   =  'propriedade do objeto'
+        source   = 'nome do aluno'
         expected = ('#coding: utf-8\n'
-                    'objeto.propriedade')
+                    'aluno.nome')
         self.assertEqual(expected, transpile(source))
+
+    def test_class_declaration_without_init(self):
+        source   = ('um cao eh um objeto:\n'
+                    '    funcao late():\n'
+                    '        mostra "Au, au!"')
+        expected = ('#coding: utf-8\n'
+                    'class cao(object):\n'
+                    '    def late():\n'
+                    '        print "Au, au!"')
 
 if __name__ == '__main__':
     unittest.main()
