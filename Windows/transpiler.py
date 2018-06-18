@@ -3,42 +3,49 @@ import re
 
 reps = [
     # Punctuation
-    (ur'\.'                , ';'      ),
-    (ur'!'                 , '();'    ),
+    (ur'\.'                  , ';'      ),
+    (ur'!'                   , '();'    ),
 
     # Comparison
-    (ur'=/='               , '!='     ),
-    (ur'\bn(a|ã)o for\b'   , '!='     ),
-    (ur'(?<![!])='         , '=='     ),
-    (ur'\bfor\b'           , '=='     ),
+    (ur'=/='                 , '!='     ),
+    (ur'\bn(a|ã)o for\b'     , '!='     ),
+    (ur'(?<![!])='           , '=='     ),
+    (ur'\bfor\b'             , '=='     ),
 
     # Assignment
-    (ur'\bé\b'             , '='      ),
-    (ur'\beh\b'            , '='      ),
-    (ur'\bs(a|ã)o\b'       , '='      ),
+    (ur'\bé\b'               , '='      ),
+    (ur'\beh\b'              , '='      ),
+    (ur'\bs(a|ã)o\b'         , '='      ),
+
+    # Operators
+    (ur'\bresto\b'           , '%'      ),
 
     # Booleans
-    (ur'\bverdadeiro\b'    , 'True'   ),
-    (ur'\bfalso\b'         , 'False'  ),
-    (ur'~'                 , 'not '   ),
-    (ur'\bn(a|ã)o\b'       , 'not'    ),
-    (ur'\bou\b'            , 'or'     ),
-    (ur'\be\b'             , 'and'    ),
+    (ur'\bverdadeiro\b'      , 'True'   ),
+    (ur'\bfalso\b'           , 'False'  ),
+    (ur'~'                   , 'not '   ),
+    (ur'\bn(a|ã)o\b'         , 'not'    ),
+    (ur'\bou\b'              , 'or'     ),
+    (ur'\be\b'               , 'and'    ),
 
     # Control flow
-    (ur'\bse\b'            , 'if'    ),
-    (ur'\bsen(a|ã)o\b'     , 'else'  ),
-    (ur'\benquanto\b'      , 'while' ),
-    (ur'\b(pa*ra )*cada\b' , 'for'   ),
-    (ur'\bem\b'            , 'in'    ),
+    (ur'(\w+)\?'             , 'if \\1:'),
+    (ur'\bse\b'              , 'if'     ),
+    (ur'\bsen(a|ã)o\b'       , 'else'   ),
+    (ur'\benquanto\b'        , 'while'  ),
+    (ur'\b(pa*ra )*cada\b'   , 'for'    ),
+    (ur'\bem\b'              , 'in'     ),
 
     # Functions
-    (ur'\bfun(c|ç)(a|ã)o\b', 'def'   ),
-    (ur'\bretorna\b'       , 'return'),
+    (ur'\bfun(c|ç)(a|ã)o\b'  , 'def'    ),
+    (ur'\bretorna\b'         , 'return' ),
 
     # I/O
-    (ur'\bmostra\b'        , 'print' ),
-    (ur'\bentrada\b'       , 'input' ),
+    (ur'\bmostra\b'          , 'print'  ),
+    (ur'\bentrada\b'         , 'input'  ),
+
+    # Objetos
+    (ur'(\w+) d(e|o|a) (\w+)', '\\3.\\1'),
 ];
 
 
