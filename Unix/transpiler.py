@@ -3,52 +3,55 @@ import re
 
 reps = [
     # Punctuation
-    (ur'\.'                  , ';'      ),
-    (ur'!'                   , '();'    ),
+    (ur'\.'                     , ';'          ),
+    (ur'!'                      , '();'        ),
 
     # Comparison
-    (ur'=/='                 , '!='     ),
-    (ur'\bn(a|ã)o for\b'     , '!='     ),
-    (ur'(?<![!])='           , '=='     ),
-    (ur'\bfor\b'             , '=='     ),
+    (ur'=/='                    , '!='         ),
+    (ur'\bn(a|ã)o for\b'        , '!='         ),
+    (ur'(?<![!])='              , '=='         ),
+    (ur'\bfor\b'                , '=='         ),
 
     # Assignment
-    (ur'\bé\b'               , '='      ),
-    (ur'\beh\b'              , '='      ),
-    (ur'\bs(a|ã)o\b'         , '='      ),
+    (ur'\bé\b'                  , '='          ),
+    (ur'\beh\b'                 , '='          ),
+    (ur'\bs(a|ã)o\b'            , '='          ),
 
     # Operators
-    (ur'\bresto\b'           , '%'      ),
+    (ur'% de'                   , '% *'        ),
+    (ur'(\w+)%'                 , '(\\1/100.0)'),
+    (ur'\bresto\b'              , '%'          ),
+    (ur'\^'                     , '**'         ),
 
     # Booleans
-    (ur'\bverdadeiro\b'      , 'True'   ),
-    (ur'\bfalso\b'           , 'False'  ),
-    (ur'~'                   , 'not '   ),
-    (ur'\bn(a|ã)o\b'         , 'not'    ),
-    (ur'\bou\b'              , 'or'     ),
-    (ur'\be\b'               , 'and'    ),
+    (ur'\bverdadeiro\b'         , 'True'       ),
+    (ur'\bfalso\b'              , 'False'      ),
+    (ur'~'                      , 'not '       ),
+    (ur'\bn(a|ã)o\b'            , 'not'        ),
+    (ur'\bou\b'                 , 'or'         ),
+    (ur'\be\b'                  , 'and'        ),
 
     # Control flow
-    (ur'(\w+)\?'             , 'if \\1:'),
-    (ur'\bse\b'              , 'if'     ),
-    (ur'\bsen(a|ã)o\b'       , 'else'   ),
-    (ur'\benquanto\b'        , 'while'  ),
-    (ur'\b(pa*ra )*cada\b'   , 'for'    ),
-    (ur'\bem\b'              , 'in'     ),
+    (ur'(.+)\?'                 , 'if \\1:'    ),
+    (ur'\bse\b'                 , 'if'         ),
+    (ur'\bsen(a|ã)o\b'          , 'else'       ),
+    (ur'\benquanto\b'           , 'while'      ),
+    (ur'\b(pa*ra )*cada\b'      , 'for'        ),
+    (ur'\bem\b'                 , 'in'         ),
 
     # Functions
-    (ur'\bfun(c|ç)(a|ã)o\b'  , 'def'    ),
-    (ur'\bretorna\b'         , 'return' ),
+    (ur'\bfun(c|ç)(a|ã)o\b'     , 'def'        ),
+    (ur'\bretorna\b'            , 'return'     ),
 
     # I/O
-    (ur'\bmostra\b'          , 'print'  ),
-    (ur'\bentrada\b'         , 'input'  ),
+    (ur'\bmostra\b'             , 'print'      ),
+    (ur'\bentrada\b'            , 'input'      ),
 
-    # Objetos
-    (ur'(\w+) d(e|o|a) (\w+)', '\\3.\\1'),
+    # Objects
+    (ur'(\w+) d(e|o|a) (\w+)'   , '\\3.\\1'    ),
     (ur'uma* (\w+) = uma* (\w+)', 'class \\1(\\2)'),
-    (ur'= uma*'              , '='      ),
-    (ur'(o|O)bjeto'          , 'object' ),
+    (ur'= uma*'                 , '='          ),
+    (ur'(o|O)bjeto'             , 'object'     ),
 ];
 
 def replace_multiple(source): # a convenience replacement function

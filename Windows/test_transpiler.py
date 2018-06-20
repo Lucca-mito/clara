@@ -59,6 +59,18 @@ class TranspilerTDD(unittest.TestCase):
                     'a != b')
         self.assertEqual(expected, transpile(source))
 
+    def test_remainder_operator(self):
+        source   =  'a resto b'
+        expected = ('#coding: utf-8\n'
+                    'a % b')
+        self.assertEqual(expected, transpile(source))
+
+    def test_percentage_operator(self):
+        source   =  '25% de x'
+        expected = ('#coding: utf-8\n'
+                    '(25/100.0) * x')
+        self.assertEqual(expected, transpile(source))
+
     def test_function_definition(self):
         source   = ('funcao f(x):\n'
                     '    retorna 2*x')
@@ -68,9 +80,9 @@ class TranspilerTDD(unittest.TestCase):
         self.assertEqual(expected, transpile(source))
 
     def test_question_mark_conditional(self):
-        source   =  'ta_chovendo? corre!'
+        source   =  'nao ta_chovendo? corre!'
         expected = ('#coding: utf-8\n'
-                    'if ta_chovendo: corre();')
+                    'if not ta_chovendo: corre();')
 
     def test_property_access(self):
         source   = 'nome do aluno'
