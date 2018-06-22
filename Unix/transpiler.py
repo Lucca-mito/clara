@@ -2,56 +2,64 @@
 import re
 
 reps = [
+    # Remove extra spacing
+    (ur'(?<=\S)  +'             , ' '             ),
+
     # Punctuation
-    (ur'\.'                     , ';'          ),
-    (ur'!'                      , '();'        ),
+    (ur'\.'                     , ';'             ),
+    (ur'!'                      , '();'           ),
 
     # Comparison
-    (ur'=/='                    , '!='         ),
-    (ur'\bn(a|ã)o for\b'        , '!='         ),
-    (ur'(?<![!])='              , '=='         ),
-    (ur'\bfor\b'                , '=='         ),
+    (ur'=/='                    , '!='            ),
+    (ur'\bn(a|ã)o for\b'        , '!='            ),
+    (ur'(?<![!])='              , '=='            ),
+    (ur'\bfor\b'                , '=='            ),
 
     # Assignment
-    (ur'\bé\b'                  , '='          ),
-    (ur'\beh\b'                 , '='          ),
-    (ur'\bs(a|ã)o\b'            , '='          ),
+    (ur'\bé\b'                  , '='             ),
+    (ur'\beh\b'                 , '='             ),
+    (ur'\bs(a|ã)o\b'            , '='             ),
 
     # Operators
-    (ur'% de'                   , '% *'        ),
-    (ur'(\w+)%'                 , '(\\1/100.0)'),
-    (ur'\bresto\b'              , '%'          ),
-    (ur'\^'                     , '**'         ),
+    (ur'% de'                   , '% *'           ),
+    (ur'(\w+)%'                 , '(\\1/100.0)'   ),
+    (ur'\bresto\b'              , '%'             ),
+    (ur'\^'                     , '**'            ),
 
     # Booleans
-    (ur'\bverdadeiro\b'         , 'True'       ),
-    (ur'\bfalso\b'              , 'False'      ),
-    (ur'~'                      , 'not '       ),
-    (ur'\bn(a|ã)o\b'            , 'not'        ),
-    (ur'\bou\b'                 , 'or'         ),
-    (ur'\be\b'                  , 'and'        ),
+    (ur'\bverdadeiro\b'         , 'True'          ),
+    (ur'\bfalso\b'              , 'False'         ),
+    (ur'~'                      , 'not '          ),
+    (ur'\bn(a|ã)o\b'            , 'not'           ),
+    (ur'\bou\b'                 , 'or'            ),
+    (ur'\be\b'                  , 'and'           ),
 
     # Control flow
-    (ur'(.+)\?'                 , 'if \\1:'    ),
-    (ur'\bse\b'                 , 'if'         ),
-    (ur'\bsen(a|ã)o\b'          , 'else'       ),
-    (ur'\benquanto\b'           , 'while'      ),
-    (ur'\b(pa*ra )*cada\b'      , 'for'        ),
-    (ur'\bem\b'                 , 'in'         ),
+    (ur'(.+)\?'                 , 'if \\1:'       ),
+    (ur'\bse\b'                 , 'if'            ),
+    (ur'\bsen(a|ã)o\b'          , 'else'          ),
+    (ur'\benquanto\b'           , 'while'         ),
+    (ur'\b(pa*ra )*cada\b'      , 'for'           ),
+    (ur'\bem\b'                 , 'in'            ),
 
     # Functions
-    (ur'\bfun(c|ç)(a|ã)o\b'     , 'def'        ),
-    (ur'\bretorna\b'            , 'return'     ),
+    (ur'\bfun(c|ç)(a|ã)o\b'     , 'def'           ),
+    (ur'\bretorna\b'            , 'return'        ),
+    (ur'def (\w+):'             , 'def \\1():'    ),
+
+    # OOP
+    (ur'(\w+) d(e|o|a) (\w+)'   , '\\3.\\1'       ), # nome do obj -> obj.nome
+    (ur'(\w+) del(e|a)'         , 'self.\\1'      ), # nome dele -> self.nome
+    (ur'uma* (\w+) = uma* (\w+)', 'class \\1(\\2)'), # um cao eh um animal -> class cao(animal)
+    (ur'= uma*'                 , '='             ), # meu_cao eh um cao() -> meu_cao = cao()
+    (ur'(o|O)bjeto'             , 'object'        ), # class cao(objeto) -> class cao(object)
+    (ur'recebe\((.*)\)'         , '__init__(\\1)' ), # recebe(_nome) -> __init__(_nome)
+    (ur'que (\w+):'             , 'que \\1():'    ), # que late: -> que late():
+    (ur'que (\w+\()'            , 'def \\1self, ' ), # que late(): -> def late(self):
 
     # I/O
-    (ur'\bmostra\b'             , 'print'      ),
-    (ur'\bentrada\b'            , 'input'      ),
-
-    # Objects
-    (ur'(\w+) d(e|o|a) (\w+)'   , '\\3.\\1'    ),
-    (ur'uma* (\w+) = uma* (\w+)', 'class \\1(\\2)'),
-    (ur'= uma*'                 , '='          ),
-    (ur'(o|O)bjeto'             , 'object'     ),
+    (ur'\bmostra\b'             , 'print'         ),
+    (ur'\bentrada\b'            , 'input'         ),
 ];
 
 def replace_multiple(source): # a convenience replacement function
