@@ -54,8 +54,8 @@ reps = [
     (ur'= uma*'                 , '='             ), # meu_cao eh um cao() -> meu_cao = cao()
     (ur'(o|O)bjeto'             , 'object'        ), # class cao(objeto) -> class cao(object)
     (ur'recebe\((.*)\)'         , '__init__(\\1)' ), # recebe(_nome) -> __init__(_nome)
-    (ur'que (\w+):'             , 'que \\1():'    ), # que late: -> que late():
-    (ur'que (\w+\()'            , 'def \\1self, ' ), # que late(): -> def late(self):
+    (ur'que (\w+) *:'           , 'que \\1():'    ), # que late: -> que late():
+    (ur'que (.+\()'             , 'def \\1self, ' ), # que late(): -> def late(self):
 
     # I/O
     (ur'\bmostra\b'             , 'print'         ),
