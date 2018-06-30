@@ -62,10 +62,20 @@ reps = [
     (ur'\bentrada\b'            , 'input'         ),
 ];
 
-def replace_multiple(source): # a convenience replacement function
-    if not source: return "" # no need to process empty strings
+def replace_methods(match):
+    # Replace 'a b' with 'a.b' if a and b aren't keywords
+    a = match.group(1)
+    b = match.group(2)
+    keywords = 'if else while for in and or not print def return class'.split()
+    if a in keywords or b in keywords: return a + ' ' + b
+    else: return a + '.' + b
+
+def replace_multiple(source):
+    if not source: return "" # No need to process empty strings
     for rep in reps:
         source = re.sub(rep[0], rep[1], source, flags=re.UNICODE)
+    # Replace methods: meu_gato mia() -> meu_gato.mia()
+    source = re.sub('(\w+) (\w+)', replace_methods, source)
     return source
 
 def transpile(source):
@@ -73,7 +83,7 @@ def transpile(source):
     QUOTED_STRING = re.compile("(\\\\?[\"']).*?\\1")
 
     # Unix: To match accented characters, the source must be converted to a Unicode object
-    source = unicode(source, "utf-8")
+    source = unicode(source, 'utf-8')
 
     result = []  # a store for the result pieces
     head = 0  # a search head reference
@@ -87,12 +97,12 @@ def transpile(source):
         result.append(replace_multiple(source[head:]))
 
     # Join back the result pieces
-    transpiled = "".join(result)
+    transpiled = ''.join(result)
 
     # Since it's in Portuguese, we have to support non-ASCII characters
-    return "#coding: utf-8\n" + transpiled
+    return '#coding: utf-8\n' + transpiled
 
-def make(filename):
+def make(filename): # Remove in the future, obviously
     fin = open(filename, 'r')
     source = fin.read()
     fout = open(filename.replace('.clara', '.py'), 'w')
