@@ -11,14 +11,14 @@ reps = [
 
     # Comparison
     (ur'=/='                    , '!='            ),
-    (ur'\bn(a|ã)o for\b'        , '!='            ),
+    (ur'\bn[aã]o for\b'         , '!='            ),
     (ur'(?<![!])='              , '=='            ),
     (ur'\bfor\b'                , '=='            ),
 
     # Assignment
     (ur'\bé\b'                  , '='             ),
     (ur'\beh\b'                 , '='             ),
-    (ur'\bs(a|ã)o\b'            , '='             ),
+    (ur'\bs[aã]o\b'             , '='             ),
 
     # Operators
     (ur'% de'                   , '% *'           ),
@@ -30,32 +30,36 @@ reps = [
     (ur'\bverdadeiro\b'         , 'True'          ),
     (ur'\bfalso\b'              , 'False'         ),
     (ur'~'                      , 'not '          ),
-    (ur'\bn(a|ã)o\b'            , 'not'           ),
+    (ur'\bn[aã]o\b'             , 'not'           ),
     (ur'\bou\b'                 , 'or'            ),
     (ur'\be\b'                  , 'and'           ),
 
     # Control flow
     (ur'(.+)\?'                 , 'if \\1:'       ),
     (ur'\bse\b'                 , 'if'            ),
-    (ur'\bsen(a|ã)o\b'          , 'else'          ),
+    (ur'\bsen[aã]o\b'           , 'else'          ),
     (ur'\benquanto\b'           , 'while'         ),
-    (ur'\b(pa*ra )*cada\b'      , 'for'           ),
+    (ur'\b(pa?ra )?cada\b'      , 'for'           ),
     (ur'\bem\b'                 , 'in'            ),
 
     # Functions
-    (ur'\bfun(c|ç)(a|ã)o\b'     , 'def'           ),
+    (ur'\bfun[cç][aã]o\b'       , 'def'           ),
     (ur'\bretorna\b'            , 'return'        ),
     (ur'def (\w+):'             , 'def \\1():'    ),
 
-    # OOP
-    (ur'(\w+) d(e|o|a) (\w+)'   , '\\3.\\1'       ), # nome do obj -> obj.nome
-    (ur'(\w+) del(e|a)'         , 'self.\\1'      ), # nome dele -> self.nome
-    (ur'uma* (\w+) = uma* (\w+)', 'class \\1(\\2)'), # um cao eh um animal -> class cao(animal)
-    (ur'= uma*'                 , '='             ), # meu_cao eh um cao() -> meu_cao = cao()
-    (ur'(o|O)bjeto'             , 'object'        ), # class cao(objeto) -> class cao(object)
+    # Properties and self
+    (ur'\bdele\b'               , 'de ele'        ), # (1) nome dele -> nome de ele
+    (ur'\bdela\b'               , 'de ela'        ), # (1) nome dela -> nome de ela
+    (ur'\bel[ea]\b'             , 'self'          ), # (2) nome de ele -> nome de self
+    (ur'(\w+) d[eoa] (\w+)'     , '\\2.\\1'       ), # (3) nome de self -> self.nome
+
+    # Classes
+    (ur'uma? (\w+) = uma? (\w+)', 'class \\1(\\2)'), # um cao eh um animal -> class cao(animal)
+    (ur'= uma?'                 , '='             ), # meu_cao eh um cao() -> meu_cao = cao()
+    (ur'[oO]bjeto'              , 'object'        ), # class cao(objeto) -> class cao(object)
     (ur'recebe\((.*)\)'         , '__init__(\\1)' ), # recebe(_nome) -> __init__(_nome)
-    (ur'que (\w+) *:'           , 'que \\1():'    ), # que late: -> que late():
-    (ur'que (.+\()'             , 'def \\1self, ' ), # que late(): -> def late(self):
+    (ur'(?<!\w)que (\w+) *:'    , 'que \\1():'    ), # que late: -> que late():
+    (ur'(?<!\w)que (.+\()'      , 'def \\1self, ' ), # que late(): -> def late(self):
 
     # I/O
     (ur'\bmostra\b'             , 'print'         ),
