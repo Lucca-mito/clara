@@ -71,15 +71,15 @@ def replace_methods(match):
     a = match.group(1)
     b = match.group(2)
     keywords = 'if else while for in and or not print def return class'.split()
-    if a in keywords or b in keywords: return a + ' ' + b
-    else: return a + '.' + b
+    if a in keywords or b in keywords: return a + ' '
+    else: return a + '.'
 
-def replace_multiple(source): # a convenience replacement function
+def replace_multiple(source):
     if not source: return "" # no need to process empty strings
     for rep in reps:
         source = re.sub(rep[0], rep[1], source, flags=re.UNICODE)
     # Replace methods: meu_gato mia() -> meu_gato.mia()
-    source = re.sub('(\w+) (\w+)', replace_methods, source)
+    source = re.sub('(\w+) (?=(\w+))', replace_methods, source)
     return source
 
 def transpile(source):

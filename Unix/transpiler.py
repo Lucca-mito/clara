@@ -70,7 +70,6 @@ def replace_methods(match):
     # Replace 'a b' with 'a.b' if a and b aren't keywords
     a = match.group(1)
     b = match.group(2)
-    if a.endswith('\n'): return
     keywords = 'if else while for in and or not print def return class'.split()
     if a in keywords or b in keywords: return a + ' '
     else: return a + '.'
@@ -80,7 +79,7 @@ def replace_multiple(source):
     for rep in reps:
         source = re.sub(rep[0], rep[1], source, flags=re.UNICODE)
     # Replace methods: meu_gato mia() -> meu_gato.mia()
-    source = re.sub('(\w+)\s+(?=(\w+))', replace_methods, source)
+    source = re.sub('(\w+) (?=(\w+))', replace_methods, source)
     return source
 
 def transpile(source):
@@ -115,4 +114,4 @@ def make(filename): # Remove in the future, obviously
     fin.close()
     fout.close()
 
-make('teste.clara')
+#make('teste.clara')
