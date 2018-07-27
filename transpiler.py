@@ -9,6 +9,7 @@ reps = [
 
     # Punctuation
     (r'\.'                     , ';'             ),
+    (r'(\d+),(\d+)'            , '(\\1.\\2)'     ),
     (r'!'                      , '();'           ),
 
     # Comparison
@@ -24,6 +25,7 @@ reps = [
 
     # Operators
     (r'% de'                   , '% *'           ),
+    (r'\)%'                    , ')/100.0'       ),
     (r'(\w+)%'                 , '(\\1/100.0)'   ),
     (r'\bresto\b'              , '%'             ),
     (r'\^'                     , '**'            ),
@@ -39,7 +41,7 @@ reps = [
     # Control flow
     (r'(.+)\?'                 , 'if \\1:'       ),
     (r'\bse\b'                 , 'if'            ),
-    (r'\bsen(a|ã)o\b'           , 'else'          ),
+    (r'\bsen(a|ã)o\b'          , 'else'          ),
     (r'\benquanto\b'           , 'while'         ),
     (r'\b(pa?ra )?cada\b'      , 'for'           ),
     (r'\bem\b'                 , 'in'            ),
