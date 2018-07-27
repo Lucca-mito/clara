@@ -5,69 +5,71 @@ import StringIO
 
 reps = [
     # Remove extra spacing
-    (r'(?<=\S)  +'             , ' '             ),
+    (r'(?<=\S)  +'             , ' '                ),
 
     # Punctuation
-    (r'\.'                     , ';'             ),
-    (r'(\d+),(\d+)'            , '(\\1.\\2)'     ),
-    (r'!'                      , '();'           ),
+    (r'\.'                     , ';'                ),
+    (r'(\d+),(\d+)'            , '(\\1.\\2)'        ),
+    (r'!'                      , '();'              ),
 
     # Comparison
-    (r'=/='                    , '!='            ),
-    (r'\bn[aã]o for\b'         , '!='            ),
-    (r'(?<![!])='              , '=='            ),
-    (r'\bfor\b'                , '=='            ),
+    (r'=/='                    , '!='               ),
+    (r'\bn(a|ã)o for\b'        , '!='               ),
+    (r'(?<![!])='              , '=='               ),
+    (r'\bfor\b'                , '=='               ),
 
     # Assignment
-    (r' é '                    , ' = '           ), # \b is weird with accented characters
-    (r'\beh\b'                 , '='             ),
-    (r'\bs(a|ã)o\b'            , '='             ),
+    (r' é '                    , ' = '              ), # \b is weird with accented characters
+    (r'\beh\b'                 , '='                ),
+    (r'\bs(a|ã)o\b'            , '='                ),
 
     # Operators
-    (r'% de'                   , '% *'           ),
-    (r'\)%'                    , ')/100.0'       ),
-    (r'(\w+)%'                 , '(\\1/100.0)'   ),
-    (r'\bresto\b'              , '%'             ),
-    (r'\^'                     , '**'            ),
+    (r'% de'                   , '% *'              ),
+    (r'\)%'                    , ')/100.0'          ),
+    (r'(\w+)%'                 , '(\\1/100.0)'      ),
+    (r'\bresto\b'              , '%'                ),
+    (r'\^'                     , '**'               ),
+    (r'\bl(e|ê)\b (\w+)'       , '\\2 = raw_input()'),
 
     # Booleans
-    (r'\bverdadeiro\b'         , 'True'          ),
-    (r'\bfalso\b'              , 'False'         ),
-    (r'~'                      , 'not '          ),
-    (r'\bn(a|ã)o\b'            , 'not'           ),
-    (r'\bou\b'                 , 'or'            ),
-    (r'\be\b'                  , 'and'           ),
+    (r'\bverdadeiro\b'         , 'True'             ),
+    (r'\bfalso\b'              , 'False'            ),
+    (r'~'                      , 'not '             ),
+    (r'\bn(a|ã)o\b'            , 'not'              ),
+    (r'\bou\b'                 , 'or'               ),
+    (r'\be\b'                  , 'and'              ),
 
     # Control flow
-    (r'(.+)\?'                 , 'if \\1:'       ),
-    (r'\bse\b'                 , 'if'            ),
-    (r'\bsen(a|ã)o\b'          , 'else'          ),
-    (r'\benquanto\b'           , 'while'         ),
-    (r'\b(pa?ra )?cada\b'      , 'for'           ),
-    (r'\bem\b'                 , 'in'            ),
+    (r'(.+)\?'                 , 'if \\1:'          ),
+    (r'\bse\b'                 , 'if'               ),
+    (r'\bsen(a|ã)o\b'          , 'else'             ),
+    (r'\benquanto\b'           , 'while'            ),
+    (r'\b(pa?ra )?cada\b'      , 'for'              ),
+    (r'\bem\b'                 , 'in'               ),
 
     # Functions
-    (r'\bfun(c|ç)(a|ã)o\b'     , 'def'           ),
-    (r'\bretorna\b'            , 'return'        ),
-    (r'def (\w+):'             , 'def \\1():'    ),
+    (r'\bfun(c|ç)(a|ã)o\b'     , 'def'              ),
+    (r'\bretorna\b'            , 'return'           ),
+    (r'def (\w+):'             , 'def \\1():'       ),
+
+    # Types
+    (r'\btexto\b'              , 'str'              ),
+    (r'\breal\b'               , 'float'            ),
+    (r'\bl(o|ó)gico\b'         , 'bool'             ),
 
     # Properties and self
-    (r'\bdele\b'               , 'de ele'        ), # (1) nome dele -> nome de ele
-    (r'\bdela\b'               , 'de ela'        ), # (1) nome dela -> nome de ela
-    (r'\bel(e|a)\b'            , 'self'          ), # (2) nome de ele -> nome de self
-    (r'(\w+) d(e|o|a) (\w+)'   , '\\3.\\1'       ), # (3) nome de self -> self.nome
+    (r'\bdele\b'               , 'de ele'           ), # (1) nome dele -> nome de ele
+    (r'\bdela\b'               , 'de ela'           ), # (1) nome dela -> nome de ela
+    (r'\bel(e|a)\b'            , 'self'             ), # (2) nome de ele -> nome de self
+    (r'(\w+) d(e|o|a) (\w+)'   , '\\3.\\1'          ), # (3) nome de self -> self.nome
 
     # Classes
-    (r'uma? (\w+) = uma? (\w+)', 'class \\1(\\2)'), # um cao eh um animal -> class cao(animal)
-    (r'= uma?'                 , '='             ), # meu_cao eh um cao() -> meu_cao = cao()
-    (r'[cC]oisa'               , 'object'        ), # class cao(objeto) -> class cao(object)
-    (r'recebe ?\((.*)\)'       , '__init__(\\1)' ), # recebe (nome) -> __init__ (nome)
-    (r'(?<!\w)que (\w+) ?:'    , 'que \\1():'    ), # que late: -> que late():
-    (r'(?<!\w)que (.+\()'      , 'def \\1self, ' ), # que late(): -> def late(self):
-
-    # I/O
-    (r'\bmostra\b'             , 'print'         ),
-    (r'\bentrada\b'            , 'raw_input'     ),
+    (r'uma? (\w+) = uma? (\w+)', 'class \\1(\\2)'   ), # um cao eh um animal -> class cao(animal)
+    (r'= uma?'                 , '='                ), # meu_cao eh um cao() -> meu_cao = cao()
+    (r'\b[cC]oisa\b'           , 'object'           ), # class cao(objeto) -> class cao(object)
+    (r'recebe ?\((.*)\)'       , '__init__(\\1)'    ), # recebe (nome) -> __init__ (nome)
+    (r'(?<!\w)que (\w+) ?:'    , 'que \\1():'       ), # que late: -> que late():
+    (r'(?<!\w)que (.+\()'      , 'def \\1self, '    ), # que late(): -> def late(self):
 ];
 
 def replace_methods(match):
@@ -90,9 +92,6 @@ def transpile(source):
     # A pattern to match strings between quotes
     QUOTED_STRING = re.compile("(\\\\?[\"']).*?\\1")
 
-    # Unix: To match accented characters, the source must be converted to a Unicode object
-    #source = unicode(source, 'utf-8')
-
     result = []  # a store for the result pieces
     head = 0  # a search head reference
     for match in QUOTED_STRING.finditer(source):
@@ -107,8 +106,8 @@ def transpile(source):
     # Join back the result pieces
     transpiled = ''.join(result)
 
-    # Since it's in Portuguese, we have to support non-ASCII characters
-    return '#coding: utf-8\n' + transpiled
+    # Support non-ASCII characters and the Clara standard library
+    return '#coding: utf-8\nfrom standard_library import *\n' + transpiled
 
 sys.stdin = StringIO.StringIO(sys.argv[2])
 exec(transpile(sys.argv[1]))

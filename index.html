@@ -26,7 +26,13 @@
       alert(res.join('\n'));
     });
 
-    socket.on('syntax error', err => { throw err; });
+    socket.on('syntax error', err => {
+        /*let traceback = err.traceback.split('\n');
+        traceback = traceback.slice(3, traceback.length - 2)
+                    .reverse()
+                    .map();
+        console.log(traceback);*/
+    });
 
     $(document).ready(() => {
         $('textarea').on('keydown', function(e) {

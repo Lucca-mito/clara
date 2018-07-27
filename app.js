@@ -11,8 +11,10 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 io.on('connection', socket => {
     socket.on('request', args => {
         PythonShell.run('transpiler.py', {args}, (err, res) => {
-            if (err) socket.emit('syntax error', err);
-            else socket.emit('response', res || []);
+            if (err) {
+                console.log(err);
+                socket.emit('syntax error', err);
+            } else socket.emit('response', res || []);
         });
     });
 });
