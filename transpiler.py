@@ -52,11 +52,6 @@ reps = [
     (r'\bretorna\b'            , 'return'           ),
     (r'def (\w+):'             , 'def \\1():'       ),
 
-    # Types
-    (r'\btexto\b'              , 'str'              ),
-    (r'\breal\b'               , 'float'            ),
-    (r'\bl(o|ó)gico\b'         , 'bool'             ),
-
     # Properties and self
     (r'\bdele\b'               , 'de ele'           ), # (1) nome dele -> nome de ele
     (r'\bdela\b'               , 'de ela'           ), # (1) nome dela -> nome de ela

@@ -1,7 +1,12 @@
+#import __builtin__
+
+texto = str
+real = float
+
 def mostra(msg):
-    if type(msg) == bool:
+    if isinstance(msg, bool):
         if msg: print "verdadeiro"
         else: print "falso"
+    elif isinstance(msg, float):
+    	print str(msg).replace('.', ',')
     else: print msg
-
-tamanho = tam = len
