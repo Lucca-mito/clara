@@ -25,6 +25,8 @@ reps = [
     (r'\bs(a|ã)o\b'            , '='                ),
 
     # Operators
+    (r'\baumenta\b'            , '+='               ),
+    (r'\bdiminui\b'            , '-='               ),
     (r'% de'                   , '% *'              ),
     (r'\)%'                    , ')/100.0'          ),
     (r'(\w+)%'                 , '(\\1/100.0)'      ),
@@ -54,11 +56,17 @@ reps = [
     (r'\bretorna\b'            , 'return'           ),
     (r'def (\w+):'             , 'def \\1():'       ),
 
-    # Properties and self
+    # Properties and 'self'
     (r'\bdele\b'               , 'de ele'           ), # (1) nome dele -> nome de ele
     (r'\bdela\b'               , 'de ela'           ), # (1) nome dela -> nome de ela
     (r'\bel(e|a)\b'            , 'self'             ), # (2) nome de ele -> nome de self
     (r'(\w+) d(e|o|a) (\w+)'   , '\\3.\\1'          ), # (3) nome de self -> self.nome
+
+    # Translate list methods, as the native types can't be extended
+    (r'adiciona'               , 'append'           ),
+    (r'insere'                 , 'insert'           ),
+    (r'remove'                 , 'pop'              ),
+    (r'indice'                 , 'index'            ),
 
     # Classes
     (r'uma? (\w+) = uma? (\w+)', 'class \\1(\\2)'   ), # um cao eh um animal -> class cao(animal)

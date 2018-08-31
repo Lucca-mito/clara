@@ -1,5 +1,3 @@
-#import __builtin__
-
 # Types
 texto = str
 real = float
@@ -23,4 +21,12 @@ def tamanho(*args):
             return abs(x)
         else: return len(arg)
     else: return len(args)
-    
+
+def procura(string, sub):
+    return string.find(sub)
+
+def junta(iterable, string):
+    return string.join(iterable)
+
+def substitui(string, old, new):
+    return string.replace(old, new)
