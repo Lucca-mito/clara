@@ -25,6 +25,9 @@ def tamanho(*args):
 def procura(string, sub):
     return string.find(sub)
 
+def separa(str, separator):
+    return str.split(separator)
+
 def junta(iterable, string):
     return string.join(iterable)
 
