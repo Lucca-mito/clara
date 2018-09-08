@@ -27,19 +27,26 @@
     });
 
     socket.on('syntax error', err => {
-        /*let traceback = err.traceback.split('\n');
-        traceback = traceback.slice(3, traceback.length - 2)
-                    .reverse()
-                    .map();
-        console.log(traceback);*/
+        let traceback = err.traceback.split('\n');
+        traceback = traceback.slice(3, traceback.length - 2).map(current => {
+            [line, func] = current.substring(24).split(', in ');
+            line -= 2;
+            if (func == '<module>') func = 'código principal';
+            else func = 'função ' + func;
+            message = `erro na linha ${line} (${func})`;
+            return message;
+        }).join('\ncausado por um ');
+
+        console.log(traceback.charAt(0).toUpperCase() + traceback.substring(1));
     });
 
     $(document).ready(() => {
         $('textarea').on('keydown', function(e) {
-            if (e.keyCode == 9 || e.which == 9) {
+            if (e.which == 9) {
                 var s = this.selectionStart;
                 e.preventDefault();
                 $(this).val(function(i, v) {
+                    // Allow indenting with tabs in <textarea>
                     return v.substring(0, this.selectionStart) + "\t" + v.substring(this.selectionEnd)
                 });
                 this.selectionEnd = s + 1;
