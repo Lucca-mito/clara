@@ -2,52 +2,73 @@
 <html>
   <head>
     <title>Clara</title>
-    <meta charset="utf-8">
-    <meta name="wiewport" content="width=device-width, initial-scale=1 user-scalable=no">
-    <!-- Remove bootstrap? -->
-    <!--<link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css"></script>-->
+    <meta charset='utf-8'>
+    <meta name='wiewport' content='width=device-width, initial-scale=1 user-scalable=no'>
+    <link rel='stylesheet' href='bootstrap/dist/css/bootstrap.min.css'></script>
     <style>
+    html, body {
+        height: 100%;
+    }
     textarea {
         tab-size: 4;
+        height: 100%;
+        width: 100%;
     }
     #source {
-        font-family: monospace;
+        font: 14px Monaco;
     }
     #stdin {
-        font-family: 'Times New Roman';
+        font: 14px Times;
+    }
+    #run {
+        float: right;
+    }
+    #output div {
+        display: inline-block;
+        background-color: lightgrey;
+        min-width: 30px;
+        text-align: center;
+        border-radius: 10%;
+        padding: 2px 6px;
+        margin-right: 5px;
+        margin-bottom: 3px;
     }
     </style>
-    <script src="socket.io/socket.io.js"></script>
-    <script src="jquery/dist/jquery.min.js"></script>
+    <script src='jquery/dist/jquery.min.js'></script>
+    <script src='bootstrap/dist/js/bootstrap.min.js'></script>
+    <script src='socket.io/socket.io.js'></script>
     <script>
     var socket = io();
 
     socket.on('response', res => {
-      alert(res.join('\n'));
+        $('#output').html('');
+        for (let output of res) {
+            $('<div>').text(output).appendTo('#output');
+        }
     });
 
     socket.on('syntax error', err => {
         let traceback = err.traceback.split('\n');
         traceback = traceback.slice(3, traceback.length - 2).map(current => {
-            [line, func] = current.substring(24).split(', in ');
+            let [line, func] = current.substring(24).split(', in ');
             line -= 2;
-            if (func == '<module>') func = 'código principal';
+            if (func == '<module>' || !func) func = 'código principal';
             else func = 'função ' + func;
-            message = `erro na linha ${line} (${func})`;
-            return message;
+            return `erro na linha ${line} (${func})`;
         }).join('\ncausado por um ');
 
-        console.log(traceback.charAt(0).toUpperCase() + traceback.substring(1));
+        console.log(traceback);
+        //console.log(traceback.charAt(0).toUpperCase() + traceback.substring(1));
     });
 
     $(document).ready(() => {
         $('textarea').on('keydown', function(e) {
             if (e.which == 9) {
-                var s = this.selectionStart;
+                const s = this.selectionStart;
                 e.preventDefault();
                 $(this).val(function(i, v) {
                     // Allow indenting with tabs in <textarea>
-                    return v.substring(0, this.selectionStart) + "\t" + v.substring(this.selectionEnd)
+                    return v.substring(0, s) + '\t' + v.substring(this.selectionEnd)
                 });
                 this.selectionEnd = s + 1;
             }
@@ -62,8 +83,31 @@
     </script>
   </head>
   <body>
-      <textarea id="source"></textarea>
-      <textarea id="stdin"></textarea>
-      <button type="button" id="run">Executar</button>
+      <main class='container-fluid d-flex h-100 flex-column'>
+          <div class='row'>
+              <div class='col-sm-6'>
+                  <h1>Clara</h1>
+              </div>
+              <div class='col-sm-6'>
+                  <div class='btn btn-success' id='run'>Executar</div>
+              </div>
+          </div>
+          <div class='row flex-grow-1' id='input-row'>
+              <div class='col-sm-8 portlet-container portlet-dropzone'>
+                  <textarea id='source'></textarea>
+              </div>
+              <div class='col-sm-4 portlet-container portlet-dropzone'>
+                  <textarea id='stdin'></textarea>
+              </div>
+          </div>
+          <div class='row'>
+              <div class='col-sm-12'>
+                  <h3>Saída do programa</h3>
+              </div>
+          </div>
+          <div class='row'>
+              <div class='col-sm-12' id='output'></div>
+          </div>
+      </main>
   </body>
 </html>
