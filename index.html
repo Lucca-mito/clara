@@ -9,21 +9,28 @@
     html, body {
         height: 100%;
     }
+    .row {
+        min-height: 45px;
+    }
+    #input-row {
+        min-height: 200px;
+    }
     textarea {
-        tab-size: 4;
         height: 100%;
         width: 100%;
+        tab-size: 4;
+        white-space: nowrap;
     }
     #source {
-        font: 14px Monaco;
+        font: 16px Monaco, monospace;
     }
     #stdin {
-        font: 14px Times;
+        font: 20px Times, serif;
     }
     #run {
         float: right;
     }
-    #output div {
+    .output {
         display: inline-block;
         background-color: lightgrey;
         min-width: 30px;
@@ -40,11 +47,25 @@
     <script>
     var socket = io();
 
+    function showOutput(output) {
+        $('#output-container').append(`<div class="output">${output}</div>`);
+    }
+
+    function showError(traceback) {
+        // Join the traceback into a single message
+        let message = traceback.join(' causado por um ');
+        // Add some bold
+        message = 'Erro' + message.substring(4);
+        message = message.replace(/(\d)/g, '<b>$1</b>') + '.';
+        // Show the error alert
+        let alertBox = $('<div class="alert alert-danger"/>');
+        alertBox.html(message);
+        $('#output-container').html(alertBox);
+    }
+
     socket.on('response', res => {
-        $('#output').html('');
-        for (let output of res) {
-            $('<div>').text(output).appendTo('#output');
-        }
+        $('#output-container').html('');
+        for (let output of res) showOutput(output);
     });
 
     socket.on('syntax error', err => {
@@ -52,19 +73,18 @@
         traceback = traceback.slice(3, traceback.length - 2).map(current => {
             let [line, func] = current.substring(24).split(', in ');
             line -= 2;
+            if (line < 1 || isNaN(line)) line = 1;
             if (func == '<module>' || !func) func = 'código principal';
             else func = 'função ' + func;
             return `erro na linha ${line} (${func})`;
-        }).join('\ncausado por um ');
-
-        console.log(traceback);
-        //console.log(traceback.charAt(0).toUpperCase() + traceback.substring(1));
+        });
+        showError(traceback);
     });
 
     $(document).ready(() => {
         $('textarea').on('keydown', function(e) {
             if (e.which == 9) {
-                const s = this.selectionStart;
+                let s = this.selectionStart;
                 e.preventDefault();
                 $(this).val(function(i, v) {
                     // Allow indenting with tabs in <textarea>
@@ -75,8 +95,8 @@
         });
 
         $('#run').click(() => {
-            const source = $('#source').val();
-            const stdin = $('#stdin').val();
+            let source = $('#source').val();
+            let stdin = $('#stdin').val();
             socket.emit('request', [source, stdin]);
         });
     });
@@ -84,14 +104,14 @@
   </head>
   <body>
       <main class='container-fluid d-flex h-100 flex-column'>
-          <div class='row'>
+          <header class='row'>
               <div class='col-sm-6'>
                   <h1>Clara</h1>
               </div>
               <div class='col-sm-6'>
                   <div class='btn btn-success' id='run'>Executar</div>
               </div>
-          </div>
+          </header>
           <div class='row flex-grow-1' id='input-row'>
               <div class='col-sm-8 portlet-container portlet-dropzone'>
                   <textarea id='source'></textarea>
@@ -106,7 +126,7 @@
               </div>
           </div>
           <div class='row'>
-              <div class='col-sm-12' id='output'></div>
+              <div class='col-sm-12' id='output-container'></div>
           </div>
       </main>
   </body>
