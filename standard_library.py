@@ -1,9 +1,9 @@
 # Types
 texto = str
 real = float
+booleano = bool
 
 # Functions
-booleano = bool
 mapa = map
 
 def mostra(msg):
@@ -18,15 +18,18 @@ def tamanho(*args):
     if len(args) == 1:
         arg = args[0]
         if isinstance(arg, int) or isinstance(arg, float):
-            return abs(x)
+            return abs(arg)
         else: return len(arg)
     else: return len(args)
 
-def procura(string, sub):
-    return string.find(sub)
+def procura(x, member):
+    if isinstance(x, str):
+        return x.find(member)
+    else:
+        return x.index(member)
 
-def separa(str, separator):
-    return str.split(separator)
+def separa(string, separator):
+    return string.split(separator)
 
 def junta(iterable, string):
     return string.join(iterable)
