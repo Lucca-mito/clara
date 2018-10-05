@@ -22,17 +22,20 @@ def tamanho(*args):
         else: return len(arg)
     else: return len(args)
 
-def procura(x, member):
-    if isinstance(x, str):
-        return x.find(member)
+def procura(iterable, member):
+    if isinstance(iterable, str):
+        return iterable.find(member)
     else:
-        return x.index(member)
+        return iterable.index(member)
 
 def separa(string, separator):
     return string.split(separator)
 
 def junta(iterable, string):
     return string.join(iterable)
+
+def adiciona(iterable, element):
+    iterable.append(element)
 
 def substitui(string, old, new):
     return string.replace(old, new)

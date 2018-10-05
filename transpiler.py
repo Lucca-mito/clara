@@ -50,6 +50,8 @@ reps = [
     (r'\benquanto\b'           , 'while'            ),
     (r'\b(pa?ra )?cada\b'      , 'for'              ),
     (r'\bem\b'                 , 'in'               ),
+    (r'\bsai\b'                , 'break'            ),
+    (r'\bcontinua\b'           , 'continue'         ),
 
     # Functions
     (r'\bfun(c|ç)(a|ã)o\b'     , 'def'              ),
