@@ -1,5 +1,6 @@
 # Types
 texto = str
+inteiro = int
 real = float
 booleano = bool
 
@@ -8,8 +9,8 @@ mapa = map
 
 def mostra(msg):
     if isinstance(msg, bool):
-        if msg: print "verdadeiro"
-        else: print "falso"
+        if msg: print 'verdadeiro'
+        else: print 'falso'
     elif isinstance(msg, float):
     	print str(msg).replace('.', ',')
     else: print msg
@@ -32,7 +33,11 @@ def separa(string, separator):
     return string.split(separator)
 
 def junta(iterable, string):
-    return string.join(iterable)
+    if len(iterable) == 0: return ''
+    result = ''
+    for element in iterable:
+        result += string + str(element)
+    return result[len(string):]
 
 def adiciona(iterable, element):
     iterable.append(element)
