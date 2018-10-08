@@ -1,3 +1,5 @@
+import math
+
 # Types
 texto = str
 inteiro = int
@@ -5,6 +7,10 @@ real = float
 booleano = bool
 
 # Functions
+arredonda = round
+arredonda_pra_cima = math.ceil
+arredonda_pra_baixo = math.floor
+raiz = math.sqrt
 mapa = map
 
 def mostra(msg):
